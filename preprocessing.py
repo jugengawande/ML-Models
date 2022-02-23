@@ -62,20 +62,24 @@ class Standardization:
             
         return std
 
-    def transform(self, data):
-        means = self.col_means(data) 
-        std = self.col_std(data, means)
+    def transform(self, dataset):
+        means = self.col_means(dataset) 
+        std = self.col_std(dataset, means)
         
-        for row in data:
+        for row in dataset:
             for  i in range(len(row)):
                 row[i] = (row[i] - means[i]) / std[i]
                 
-        return data
+        return dataset
+    
+    def _values_(self, dataset):
+        return self.col_means(dataset) , self.col_std(dataset, self.col_means(dataset))
     
     
-    
-        
-s = Standardization()
 
-dataset = [[50, 30], [20, 90], [30, 50]]
-print(s.transform(dataset))
+class BoxCox:
+    pass
+    
+class LogTransform:
+    pass
+
