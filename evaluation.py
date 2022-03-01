@@ -3,9 +3,11 @@ In order to train our models we need to split our data into train and test data.
 This module implements some of the most commonly used evaluation techniques. 
 '''
 
+from math import ceil
 from random import randrange
 from re import L
 from tkinter import E
+from turtle import clear
 
 def train_test_split (dataset, split = 0.6):
     '''
@@ -74,28 +76,27 @@ def stratified_split (dataset, labels, split=.6):
         strata_size = len([x for x in labels if x == i])
         strata_prop.append(strata_size / len(dataset))
     
-    if split <= 1:
+    if split <= 1: #Testing for valid split
         train_size = int(len(dataset) * split)
     else:
         raise ValueError("Invalid split percentage. Requires a value between 0-1") 
     
-    train_set = []
-    test_set = []
+
     strata = [[] for x in range(len(strata_label))]
     
     for i in range(len(labels)):
         strata[strata_label.index(labels[i])].append(dataset[i])
-    
     print(strata)
     
-
-    i = 0
+    
+    train_set = []
+    test_set = []
     
     for s in strata:
         
         
         s_train = []
-        class_size = int (len(s) * strata_prop[i] )
+        class_size = int(round (len(s) * split ))
         
         while len(s_train) < class_size:
             index =  randrange(len(s))
@@ -103,11 +104,10 @@ def stratified_split (dataset, labels, split=.6):
             
         train_set.extend(s_train)
         test_set.extend(s)
-        
-        i = i +1
+
             
-    print(strata_label)  
-    print (strata_prop)
+    # print(strata_label)  
+    # print (strata_prop)
 
     
     return train_set, test_set
